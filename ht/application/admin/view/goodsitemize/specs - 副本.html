@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加文章</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="__JS__/layui/css/layui.css"rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>商品分类添加</h5>
+                </div>
+                <div class="ibox-content" id="rule_data">
+                    <form class="form-horizontal m-t" id="commentForm" method="post" action="{:url('goodsitemize/norms')}">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">规格名称:</label>
+                            <div class="input-group col-sm-5">
+                                <input id="specs_name" type="text" class="form-control" name="specs_name" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">规格备注:</label>
+                            <div class="input-group col-sm-5">
+                                <input id="specs_memo" type="text" class="form-control" name="specs_memo" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <hr>
+                        <h5>选项</h5>
+                        <a href="javascript:ruledata_add();" id="fabu">添加选项</a>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-8">
+
+                                <button class="btn btn-primary" type="submit">确认提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__JS__/plugins/validate/messages_zh.min.js"></script>
+<script src="__JS__/layui/layui.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.config.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.all.js"></script>
+<script>
+
+    function ruledata_add() {
+        $("#rule_data").append($("#rule_data tr:last").clone(true));
+        var _num = $(".ruledata_list:visible").length > 0 ? parseInt($(".ruledata_list:visible:last").find("td:first").text()) : 0;
+        $(".ruledata_list:hidden:first").show().find("td:first").html(_num + 1);
+    }
+
+
+
+
+
+    $('#pid').change(function(){
+        $("#level").children("option").detach();
+        $("#level").append("<option>请选择</option>");
+        $.ajax({
+            type:"post",
+            url:"{:url('goodsitemize/norms')}",
+            data:'pro_id='+$('#pid').val(),
+            dataType:"json",
+            success:function(data){
+
+                for(var key in data.data){
+                    $("#level").append($('<option value="'+data.data[key]['id']+'">'+data.data[key]['name']+'</option>'));
+                }
+
+
+            }
+        });
+    });
+    $('#level').change(function(){
+        $("#super").children("option").detach();
+        $("#super").append("<option>请选择</option>");
+        $.ajax({
+            type:"post",
+            url:"{:url('goodsitemize/superior')}",
+            data:'level_id='+$('#level').val(),
+            dataType:"json",
+            success:function(data){
+
+                for(var key in data.data){
+
+                    $("#super").append($('<option value="'+data.data[key]['id']+'">'+data.data[key]['name']+'</option>'));
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
