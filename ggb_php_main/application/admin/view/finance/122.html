@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" type="text/css" href="__CSS__/common.css"/>
+    <link rel="stylesheet" type="text/css" href="__CSS__/main.css"/>
+</head>
+<body>
+<div class="container clearfix" style="">
+
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+
+        <div class="search-wrap">
+            <div class="search-content">
+                <form action="{:url('finance/recharge')}" method="get">
+                    <table class="search-tab">
+                        <tr>
+                         <th width="120">充值状态:</th>
+                        <td>
+                                <select name="status" id="status" width="200">
+                                    <option value="">状态</option>
+                                    <option value="1">待付款</option>
+                                    <option value="2">已付款</option>
+                                </select>
+                            </td>
+                            <th width="70">用户账号:</th>
+                            <td><input class="common-text"  name="phone" value="" id="phone" type="text"></td>
+                            <td><input class="btn btn-primary btn2" name="sub" value="查询" type="submit"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        <div class="result-wrap">
+            <form name="myform" id="myform" method="post">
+                <div class="result-title">
+                    <div class="result-list">
+                      <!--  <a class="item-box-lf item-imgbox" href="{:url('finance/recharge',['st'=>0])}" style="">待付款</a>
+                         <a href="{:url('finance/recharge',['st'=>1])}">已付款</a>-->
+                    </div>
+                </div>
+                <div class="result-content">
+                    <table class="result-tab" width="100%">
+                        <tr>
+                            <th >ID</th>
+                            <th >充值单号</th>
+                            <th >用户账号</th>
+                            <th >充值金额</th>
+                            <th >充值账户</th>
+                            <th >充值方式</th>
+                            <th >充值时间</th>
+                            <th >充值状态</th>
+                            <th >操作</th>
+                        </tr>
+                        {volist name="list" id="vo"}
+                        <tr>
+
+                            <td>{$vo.id}</td>
+                            <td>{$vo.order_sn}</td>
+                            <td>{$vo.phone}</td>
+                            <td>{$vo.account}</td>
+                            <td>{$vo.mobile}</td>
+                            <td>{$vo.mode}</td>
+                            <td>{$vo.ctime}</td>
+                            <td>
+                                {if condition="$vo.pay_status eq 1"}待付款
+                                {elseif condition="$vo.pay_status eq 2"/}已付款
+                                {else /} value3
+                                {/if}
+                            </td>
+                           <td>
+                               <a class="link-update" href="{:url('finance/rechedit',['id'=>{$vo.id}])}" style="">编辑</a>|
+                               <a class="link-del" href="#">删除</a>
+                            </td>
+
+                        </tr>
+                        {/volist}
+                    </table>
+                    <div class="list-page"> 2 条 1/1 页</div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script>
+
+</script>
+</body>
+</html>
